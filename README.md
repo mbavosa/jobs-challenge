@@ -16,7 +16,7 @@ You still apply yourself. Nothing here submits applications.
 
 ## Setup
 
-1. Put a `.env` file in the folder **above** this one:
+1. Put a `.env` file in this folder (it is git-ignored):
    ```
    JOBSPIPE_API_KEY=jp_live_...
    GMAIL_ADDRESS=you@gmail.com

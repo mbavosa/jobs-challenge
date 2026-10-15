@@ -1,8 +1,8 @@
 #!/bin/bash
 # Turn the 7:00am daily job email on or off.
-#   bash jobs/schedule.sh on     # start daily emails
-#   bash jobs/schedule.sh off    # stop them
-#   bash jobs/schedule.sh status
+#   bash schedule.sh on     # start daily emails
+#   bash schedule.sh off    # stop them
+#   bash schedule.sh status
 set -e
 LABEL="com.mbavosa.dailyjobs"
 PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"

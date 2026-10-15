@@ -2,13 +2,13 @@
 """Build today's ranked job list.
 
 Usage:
-    python3 jobs/daily.py              # search, filter, check open, rank, write jobs/YYYY-MM-DD.md
-    python3 jobs/daily.py --pages 2    # fetch more results (each page of 25 costs ~25 credits)
-    python3 jobs/daily.py --email      # also email the top 5 to yourself
-    python3 jobs/daily.py --applied <linkedin url or id> ...   # log jobs you applied to
+    python3 daily.py              # search, filter, check open, rank, write YYYY-MM-DD.md
+    python3 daily.py --pages 2    # fetch more results (each page of 25 costs ~25 credits)
+    python3 daily.py --email      # also email the top 5 to yourself
+    python3 daily.py --applied <linkedin url or id> ...   # log jobs you applied to
 
-Reads JOBSPIPE_API_KEY, GMAIL_ADDRESS, GMAIL_APP_PASSWORD and JOBS_OPENER_URL from .env.
-Search settings live in jobs/filters.json; answers in jobs/answers.md.
+Reads JOBSPIPE_API_KEY, GMAIL_ADDRESS, GMAIL_APP_PASSWORD and JOBS_OPENER_URL from .env in this folder.
+Search settings live in filters.json; answers in answers.md.
 """
 import argparse
 import datetime
@@ -28,7 +28,6 @@ from email.message import EmailMessage
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-ROOT = HERE.parent
 SEARCH_URL = "https://api.jobspipe.dev/v1/jobs/search"
 LINKEDIN_GUEST = "https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{}"
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Safari/537.36"
@@ -58,7 +57,7 @@ LOCAL_KEYS = {"skip_companies", "skip_if_description_mentions", "boost_if_descri
 
 def load_env():
     env = {}
-    for line in (ROOT / ".env").read_text().splitlines():
+    for line in (HERE / ".env").read_text().splitlines():
         if "=" in line and not line.lstrip().startswith("#"):
             k, v = line.split("=", 1)
             env[k.strip()] = v.strip()
@@ -180,7 +179,7 @@ def unsubscribed(env):
     flag.write_text(datetime.date.today().isoformat())
     send_email(env, "Daily job emails stopped",
                "<p>You're unsubscribed. No more daily job emails will be sent.</p>"
-               "<p>To turn them back on, run: <code>bash ~/Documents/q42026/jobs/schedule.sh on</code></p>")
+               "<p>To turn them back on, run: <code>bash ~/jobs-challenge/schedule.sh on</code></p>")
     subprocess.run(["bash", str(HERE / "schedule.sh"), "off"], check=False)
     return True
 
@@ -212,7 +211,7 @@ def email_top(env, picks, total, today):
             f'<li style="margin:8px 0"><b>{s}/10</b>: <a href="{esc(job.get("url") or "")}">{esc(job["job_title"])}</a>'
             f' at {esc(job.get("company") or "")} ({esc(salary(job))})</li>'
             for s, job, _, _ in picks)
-        body = f"{button}<ol>{items}</ol><p>{total} new matches today. Full list: jobs/{today}.md on your Mac.</p>"
+        body = f"{button}<ol>{items}</ol><p>{total} new matches today. Full list: ~/jobs-challenge/{today}.md on your Mac.</p>"
     body += (f'<hr><p style="font-size:12px;color:#666">Sent by your daily job search. '
              f'<a href="{stop}">Stop these emails</a> (opens a pre-filled email; send it to unsubscribe).</p>')
     n = len(picks)
@@ -264,7 +263,7 @@ def main():
     kept.sort(key=lambda r: (-r[0], -(r[1].get("min_annual_salary_usd") or 0)))
     today = datetime.date.today().isoformat()
     lines = [f"# Jobs for {today}", "",
-             f"{len(kept)} new matches, {len(skipped)} skipped. Answers: jobs/answers.md", "",
+             f"{len(kept)} new matches, {len(skipped)} skipped. Answers: answers.md", "",
              "| Fit | Job | Company | Pay | Matches | Gaps |", "|---|---|---|---|---|---|"]
     def row(s, job, hits, gaps):
         return (f"| {s}/10 | [{job['job_title']}]({job.get('url')}) | {job.get('company')} | "
@@ -277,7 +276,8 @@ def main():
         lines += [row(*k) for k in low]
     lines += ["", "## Skipped", ""] + [f"- {j['job_title']} at {j.get('company')}: {r}" for j, r in skipped]
     out = HERE / f"{today}.md"
-    out.write_text("\n".join(lines) + "\n")
+    if kept or not out.exists():  # don't replace an earlier list with an empty one
+        out.write_text("\n".join(lines) + "\n")
     seen_path.write_text(json.dumps(sorted(seen)))
     print(f"Wrote {out} ({len(kept)} jobs, {len(skipped)} skipped)")
     if args.email:
