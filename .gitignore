@@ -1,0 +1,11 @@
+# Personal data: never commit
+.env
+resume.pdf
+answers.md
+seen.json
+applied.json
+subscribed_at.txt
+unsubscribed.txt
+daily.log
+20??-??-??.md
+__pycache__/

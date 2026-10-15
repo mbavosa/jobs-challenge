@@ -1,0 +1,125 @@
+{
+  "_notes": "Job search filters for JobsPipe search_jobs. Remote US, entry/junior/mid, direct employers, last 3 days.",
+  "job_title_or": [
+    "PHP Developer",
+    "PHP",
+    "JavaScript Developer",
+    "Web Developer",
+    "Drupal",
+    "WordPress",
+    "Front End",
+    "Front-End",
+    "Frontend",
+    "Email Operations",
+    "Email Developer",
+    "Web Production",
+    "Full Stack",
+    "Fullstack",
+    "Full-Stack",
+    "Software Engineer",
+    "Software Developer",
+    "Software Development Engineer",
+    "Developer"
+  ],
+  "job_title_not": [
+    "Senior",
+    "Sr.",
+    "Sr ",
+    "Lead",
+    "Principal",
+    "Staff",
+    "Architect",
+    "Head of",
+    "Director",
+    "VP",
+    "Intern",
+    "SMTS",
+    "LMTS",
+    "iOS",
+    "Android",
+    "Data Engineer",
+    "ETL",
+    "Machine Learning",
+    "ML ",
+    "RPA",
+    "Database"
+  ],
+  "description_or": [
+    "React",
+    "JavaScript",
+    "PHP",
+    "WordPress",
+    "Drupal",
+    "HTML",
+    "CSS",
+    "front-end",
+    "frontend",
+    "email template"
+  ],
+  "job_seniority_or": [
+    "entry",
+    "junior",
+    "mid"
+  ],
+  "include_unknown": [
+    "seniority",
+    "employment_type"
+  ],
+  "employment_type_or": [
+    "full-time",
+    "part-time",
+    "contract",
+    "temporary"
+  ],
+  "employer_type_or": [
+    "employer"
+  ],
+  "job_country_code_or": [
+    "US"
+  ],
+  "work_arrangement_or": [
+    "remote"
+  ],
+  "posted_at_max_age_days": 1,
+  "last_verified_max_age_days": 1,
+  "status": "active",
+  "max_applicant_count": 200,
+  "max_ghost_score": 30,
+  "min_employee_count": 10,
+  "_post_filters": "Applied after the search, by reading each posting.",
+  "skip_companies": [
+    "Torentify",
+    "Wiraa",
+    "Netrolynx AI",
+    "Jobfinder AI",
+    "Futurefit Recruitment Services LLC"
+  ],
+  "skip_if_description_mentions": [
+    "Secret clearance",
+    "Top Secret",
+    "TS/SCI",
+    "travel requirement",
+    "travel up to",
+    "not currently hiring fully remote",
+    "Staff Engineer",
+    "Senior Software Engineer",
+    "Secret security",
+    "obtain a Secret",
+    "Secret-level",
+    "DoD Secret"
+  ],
+  "boost_if_min_salary_usd_at_least": 80000,
+  "boost_if_description_mentions": [
+    "Public Trust",
+    "Section 508",
+    "WCAG",
+    "Drupal",
+    "WordPress",
+    "PHP",
+    "React",
+    "email",
+    "MJML",
+    "landing page",
+    "federal"
+  ]
+}

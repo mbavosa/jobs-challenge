@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Open Jobs</title>
+<style>
+  :root { --bg: #f6f7f9; --card: #fff; --ink: #1d2433; --muted: #5b6475; --accent: #0a66c2; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #14171c; --card: #1e232b; --ink: #e8ebf0; --muted: #9aa3b2; --accent: #4c9be8; }
+  }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
+  main { max-width: 560px; margin: 40px auto; padding: 0 16px; }
+  .card { background: var(--card); border-radius: 14px; padding: 24px; }
+  h1 { font-size: 22px; margin: 0 0 8px; }
+  p { color: var(--muted); margin: 8px 0; }
+  button { background: var(--accent); color: #fff; border: 0; border-radius: 24px;
+           padding: 12px 22px; font-size: 16px; font-weight: 600; cursor: pointer; margin: 12px 0; }
+  ol { padding-left: 20px; } li { margin: 8px 0; word-break: break-all; }
+  a { color: var(--accent); }
+  #note { display: none; }
+</style>
+</head>
+<body>
+<main><div class="card">
+  <h1 id="title">Today's jobs</h1>
+  <p id="status"></p>
+  <button id="open">Open all</button>
+  <p id="note">Your browser blocked the tabs. Click the pop-up icon in the address bar, choose
+    <b>Always allow pop-ups</b> for this site, then click <b>Open all</b>. Next time it opens automatically.</p>
+  <ol id="list"></ol>
+</div></main>
+<script>
+  // Job links arrive in the URL after "#", as u=<link>&u=<link>...
+  const urls = new URLSearchParams(location.hash.slice(1)).getAll("u")
+    .filter(u => /^https:\/\//.test(u));
+  const list = document.getElementById("list");
+  for (const u of urls) {
+    const li = document.createElement("li");
+    const a = document.createElement("a");
+    a.href = u; a.target = "_blank"; a.rel = "noopener"; a.textContent = u;
+    li.append(a); list.append(li);
+  }
+  document.getElementById("title").textContent = urls.length ? `Today's ${urls.length} jobs` : "No jobs in this link";
+  document.getElementById("open").textContent = `Open all ${urls.length}`;
+  function openAll() {
+    let blocked = 0;
+    for (const u of urls) {
+      const w = window.open(u, "_blank");
+      if (w) w.opener = null; else blocked++;
+    }
+    const failed = blocked > 0;
+    document.getElementById("note").style.display = failed ? "block" : "none";
+    document.getElementById("status").textContent = failed ? "" : `Opened ${urls.length} tabs.`;
+  }
+  document.getElementById("open").addEventListener("click", openAll);
+  if (urls.length) openAll();
+</script>
+</body>
+</html>
