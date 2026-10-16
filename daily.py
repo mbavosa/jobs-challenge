@@ -115,7 +115,7 @@ def skip_reason(job, filters):
     company = (job.get("company") or "").lower()
     for c in filters.get("skip_companies", []):
         if c.lower() in company:
-            return f"reposter ({job.get('company')})"
+            return f"skip list ({job.get('company')})"
     text = text_of(job)
     for phrase in filters.get("skip_if_description_mentions", []):
         if phrase.lower() in text:
