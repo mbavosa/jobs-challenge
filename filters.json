@@ -1,5 +1,5 @@
 {
-  "_notes": "Job search filters for JobsPipe search_jobs. Remote US, entry/junior/mid, direct employers, last 3 days.",
+  "_notes": "Job search filters for JobsPipe search_jobs. Remote US, entry/junior/mid, direct employers, last 1 day.",
   "job_title_or": [
     "PHP Developer",
     "PHP",
@@ -83,7 +83,6 @@
   "posted_at_max_age_days": 1,
   "last_verified_max_age_days": 1,
   "status": "active",
-  "max_applicant_count": 200,
   "max_ghost_score": 30,
   "min_employee_count": 10,
   "_post_filters": "Applied after the search, by reading each posting.",
