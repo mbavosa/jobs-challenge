@@ -219,6 +219,20 @@ def email_top(env, picks, total, today):
     print(f"Emailed {n} jobs to {env['GMAIL_ADDRESS']}")
 
 
+def wait_for_internet(minutes=15):
+    """At 7am Wi-Fi may still be reconnecting after sleep; retry each minute."""
+    import socket
+    for attempt in range(minutes + 1):
+        try:
+            socket.create_connection(("imap.gmail.com", 993), timeout=10).close()
+            return True
+        except OSError:
+            if attempt < minutes:
+                print(f"No internet yet, retrying in 1 min ({attempt + 1}/{minutes})", flush=True)
+                time.sleep(60)
+    return False
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--pages", type=int, default=1)
@@ -233,6 +247,8 @@ def main():
     api_key = env.get("JOBSPIPE_API_KEY")
     if not api_key:
         sys.exit("Add JOBSPIPE_API_KEY=... to .env first.")
+    if not wait_for_internet():
+        sys.exit(f"{datetime.datetime.now():%Y-%m-%d %H:%M} No internet after 15 min; skipped today.")
     if args.email and unsubscribed(env):
         return print("Unsubscribed; not sending.")
     filters = json.loads((HERE / "filters.json").read_text())
