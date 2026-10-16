@@ -80,6 +80,9 @@
   "work_arrangement_or": [
     "remote"
   ],
+  "source_not": [
+    "himalayas"
+  ],
   "posted_at_max_age_days": 1,
   "last_verified_max_age_days": 1,
   "status": "active",
@@ -92,7 +95,8 @@
     "Netrolynx AI",
     "Jobfinder AI",
     "Futurefit Recruitment Services LLC",
-    "Bixal"
+    "Bixal",
+    "Turing"
   ],
   "skip_if_description_mentions": [
     "Secret clearance",
